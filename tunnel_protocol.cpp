@@ -1,4 +1,4 @@
-#include "tunnel/protocol.h"
+#include <tunnel_protocol.h>
 
 
 uint32_union_t uint32_union_data;

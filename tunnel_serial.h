@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include "tunnel/protocol.h"
+#include <tunnel_protocol.h>
 
 class TunnelSerial
 {

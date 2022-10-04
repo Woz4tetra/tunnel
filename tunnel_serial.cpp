@@ -1,5 +1,5 @@
 
-#include "tunnel/serial.h"
+#include <tunnel_serial.h>
 
 TunnelSerial::TunnelSerial(Stream* debug_serial, Stream* protocol_serial)
 {
