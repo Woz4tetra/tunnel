@@ -7,8 +7,8 @@ class TunnelSerial
 {
 private:
     const uint32_t PACKET_STOP_TIMEOUT = 500;
-    Stream* _debug_serial;
-    Stream* _protocol_serial;
+    Stream* _debug_serial = NULL;
+    Stream* _protocol_serial = NULL;
     
     char* _read_buffer;
     char* _write_buffer;

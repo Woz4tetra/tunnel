@@ -106,7 +106,7 @@ String packetToString(char* buffer, int start_index, int stop_index)
 
 TunnelProtocol::TunnelProtocol(Stream* debug_serial)
 {
-    _debug_serial = _debug_serial;  // can be NULL
+    _debug_serial = debug_serial;  // can be NULL
     _read_packet_num = 0;
     _write_packet_num = 0;
     _read_buffer_index = 0;

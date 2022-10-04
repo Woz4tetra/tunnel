@@ -208,7 +208,7 @@ private:
     int _read_buffer_index;
     uint32_t _read_packet_num, _write_packet_num;
     int _current_segment_start, _current_segment_stop;
-    Stream* _debug_serial;
+    Stream* _debug_serial = NULL;
 
     bool getNextSegment(char* buffer, int stop_index);
     bool getNextSegment(char* buffer, int stop_index, int length);
