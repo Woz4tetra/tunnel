@@ -1,6 +1,24 @@
 #include <tunnel_protocol.h>
 
 
+uint64_union_t uint64_union_data;
+uint64_t to_uint64(char* buffer)
+{
+    for (unsigned short i = 0; i < sizeof(uint64_t); i++) {
+        uint64_union_data.byte[sizeof(uint64_t) - i - 1] = buffer[i];
+    }
+    return uint64_union_data.integer;
+}
+
+int64_union_t int64_union_data;
+int64_t to_int64(char* buffer)
+{
+    for (unsigned short i = 0; i < sizeof(int64_t); i++) {
+        int64_union_data.byte[sizeof(int64_t) - i - 1] = buffer[i];
+    }
+    return int64_union_data.integer;
+}
+
 uint32_union_t uint32_union_data;
 uint32_t to_uint32(char* buffer)
 {
@@ -8,6 +26,15 @@ uint32_t to_uint32(char* buffer)
         uint32_union_data.byte[sizeof(uint32_t) - i - 1] = buffer[i];
     }
     return uint32_union_data.integer;
+}
+
+int32_union_t int32_union_data;
+int32_t to_int32(char* buffer)
+{
+    for (unsigned short i = 0; i < sizeof(int32_t); i++) {
+        int32_union_data.byte[sizeof(int32_t) - i - 1] = buffer[i];
+    }
+    return int32_union_data.integer;
 }
 
 uint16_union_t uint16_union_data;
@@ -28,14 +55,6 @@ int16_t to_int16(char* buffer)
     return int16_union_data.integer;
 }
 
-int32_union_t int32_union_data;
-int32_t to_int32(char* buffer)
-{
-    for (unsigned short i = 0; i < sizeof(int32_t); i++) {
-        int32_union_data.byte[sizeof(int32_t) - i - 1] = buffer[i];
-    }
-    return int32_union_data.integer;
-}
 
 float_union_t float_union_data;
 float to_float(char* buffer)
@@ -137,15 +156,27 @@ int TunnelProtocol::makePacket(packet_type_t packet_type, char* write_buffer, co
     while (*formats != '\0')
     {
         if (*formats == 'd') {  // 32 bit signed
-            int32_union_data.integer = va_arg(args, int);
+            int32_union_data.integer = va_arg(args, int32_t);
             for (unsigned short i = 0; i < sizeof(int32_t); i++) {
                 write_buffer[buffer_index++] = int32_union_data.byte[sizeof(int32_t) - i - 1];
             }
         }
         else if (*formats == 'u') {  // 32 bit unsigned
-            uint32_union_data.integer = va_arg(args, int);
+            uint32_union_data.integer = va_arg(args, uint32_t);
             for (unsigned short i = 0; i < sizeof(uint32_t); i++) {
                 write_buffer[buffer_index++] = uint32_union_data.byte[sizeof(uint32_t) - i - 1];
+            }
+        }
+        else if (*formats == 'l') {  // 64 bit signed
+            int64_union_data.integer = va_arg(args, int64_t);
+            for (unsigned short i = 0; i < sizeof(int64_t); i++) {
+                write_buffer[buffer_index++] = int64_union_data.byte[sizeof(int64_t) - i - 1];
+            }
+        }
+        else if (*formats == 'm') {  // 64 bit unsigned
+            uint64_union_data.integer = va_arg(args, uint64_t);
+            for (unsigned short i = 0; i < sizeof(uint64_t); i++) {
+                write_buffer[buffer_index++] = uint64_union_data.byte[sizeof(uint64_t) - i - 1];
             }
         }
         else if (*formats == 'b') {  // 8 bit signed

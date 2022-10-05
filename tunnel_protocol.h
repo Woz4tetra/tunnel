@@ -4,17 +4,18 @@
 #include <Arduino.h>
 
 
-typedef union uint16_union
+typedef union uint64_union
 {
-    uint16_t integer;
-    unsigned char byte[sizeof(uint16_t)];
-} uint16_union_t;
+    uint64_t integer;
+    unsigned char byte[sizeof(uint64_t)];
+} uint64_union_t;
 
-typedef union int16_union
+
+typedef union int64_union
 {
-    int16_t integer;
-    unsigned char byte[sizeof(int16_t)];
-} int16_union_t;
+    int64_t integer;
+    unsigned char byte[sizeof(int64_t)];
+} int64_union_t;
 
 typedef union uint32_union
 {
@@ -29,6 +30,18 @@ typedef union int32_union
     unsigned char byte[sizeof(int32_t)];
 } int32_union_t;
 
+typedef union uint16_union
+{
+    uint16_t integer;
+    unsigned char byte[sizeof(uint16_t)];
+} uint16_union_t;
+
+typedef union int16_union
+{
+    int16_t integer;
+    unsigned char byte[sizeof(int16_t)];
+} int16_union_t;
+
 typedef union float_union
 {
     float floating_point;
@@ -42,10 +55,12 @@ typedef union double_union
 } double_union_t;
 
 
+uint64_t to_uint64(char* buffer);
+int64_t to_int64(char* buffer);
 uint32_t to_uint32(char* buffer);
-int16_t to_int16(char* buffer);
-uint16_t to_uint16(char* buffer);
 int32_t to_int32(char* buffer);
+uint16_t to_uint16(char* buffer);
+int16_t to_int16(char* buffer);
 float to_float(char* buffer);
 double to_double(char* buffer);
 String to_string(char* buffer, int length);
@@ -142,6 +157,16 @@ public:
     }
     int getStop() {
         return _stop_index;
+    }
+    bool getInt64(int64_t& result) {
+        result = to_int64(_buffer + _current_index);
+        _current_index += sizeof(int64_t);
+        return checkIndex();
+    }
+    bool getUInt64(uint64_t& result) {
+        result = to_uint64(_buffer + _current_index);
+        _current_index += sizeof(uint64_t);
+        return checkIndex();
     }
     bool getInt32(int32_t& result) {
         result = to_int32(_buffer + _current_index);
